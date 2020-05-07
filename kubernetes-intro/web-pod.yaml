@@ -1,0 +1,24 @@
+apiVersion: v1 # Версия API
+kind: Pod # Объект, который создаем
+metadata:
+  name: web # Название Pod
+  labels: # Метки в формате key: value
+    key: nz-chto-tut
+spec: # Описание Pod
+  containers: # Описание контейнеров внутри Pod
+  - name: web # Название контейнера
+    image: alextitov1/web:latest # Образ из которого созд
+    volumeMounts:
+      - name: app
+        mountPath: /app
+  initContainers:
+  - name: init
+    image: busybox:1.31.0
+    volumeMounts:
+      - name: app
+        mountPath: /app
+    command: ['sh', '-c', 'wget -O- https://tinyurl.com/otus-k8s-intro | sh']
+  volumes:
+  - name: app
+    emptyDir: {}
+
